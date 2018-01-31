@@ -4,3 +4,5 @@ This project relies on HighCharts to display the data that we generate.
 
 
 ![Alt text](/screenshot.jpg?raw=true "Screenshot")
+
+##Installation
