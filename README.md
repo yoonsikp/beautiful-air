@@ -1,5 +1,5 @@
 # beautiful-air
-An easy way to collect and display data about the air we breathe. Use this project along with my `air-multisensor` project to get the graphs I've shown below. Note: this project relies on HighCharts to display the data that we generate.
+An easy way to collect and display data about the air we breathe. Use this project along with my `air-multisensor` project to get the graphs I've shown below. Note: this project relies on HighCharts to display the data.
 
 
 ![Alt text](/screenshot.jpg?raw=true "Screenshot")
