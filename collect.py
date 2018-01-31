@@ -1,4 +1,3 @@
-import ntplib
 import time
 import urllib.request
 tfile = open('temperature.csv', 'a')
