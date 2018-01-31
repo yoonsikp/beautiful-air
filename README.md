@@ -1,6 +1,5 @@
 # beautiful-air
-An easy way to collect and display data about the air we breathe.
-This project relies on HighCharts to display the data that we generate.
+An easy way to collect and display data about the air we breathe. Use this project along with my `air-multisensor` project to get the beautiful graphs I've shown below. Note: this project relies on HighCharts to display the data that we generate.
 
 
 ![Alt text](/screenshot.jpg?raw=true "Screenshot")
@@ -25,3 +24,6 @@ su -c "cd ~/beautiful-air/ && screen -dmS miniserver python3 -m http.server 8080
 su -c "cd ~/beautiful-air/ && screen -dmS collect watch -n 60 python3 ~/beautiful-air/collect.py" -s /bin/sh pi
 #      directory of csv/html.          friendly name   update interval     path to collect.py             username
 ```
+
+## Customizations
+The modular form of this project means that you can easily add or erase blocks of code from both `index.html` and `collect.py` and add any sensor of your choice. Duplicate a csv file, rename it, and change the header/labels. Add a url request, and add your new file to `collect.py`. Copy/edit a block from `index.html`, and change the url to your own. Use the humidity code block as a template for a single sensor plot, or the particulate matter one for multiple plots.
