@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+<style>
+#container{
+max-width: 1000px;
+margin: auto;
+}
+#container1{
+max-width: 1000px;
+margin: auto;
+}
+#container2{
+max-width: 1000px;
+margin: auto;
+}
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Sensors</title>
+    <script type="text/javascript"">
+    $(document).ready(function () {
+	Highcharts.setOptions({ // This is for all plots, change Date axis to local timezone
+	  global: {
+	    useUTC: false
+	  }
+	});
+    function parseCSV(csvFile) {
+    // empty array for storing the chart data
+    var data = [];
+    // Split the lines
+    var lines = csvFile.split('\n');
+    // Iterate over the lines and add categories or series
+    $.each(lines, function(lineNo, line) {
+        if (lineNo != 0) {
+            var items = line.split(',');
+            // Insert date and player count into the series
+            data.push([parseInt(items[0]), parseInt(items[1])]);
+        }
+    });
+    if (data.length != 0){
+        data.pop()
+    }
+    return data
+    }
+
+    $.get('temperature.csv', function (data) {
+        $('#container').highcharts('StockChart', {
+            xAxis: {
+                type: 'datetime',
+                ordinal: false
+            },
+            yAxis: {
+                tickInterval: 2,
+                endOnTick: false,
+                min: 15,
+                max: 28,
+            },
+            rangeSelector: {
+                buttons: [{
+                    type: 'hour',
+                    count: 1,
+                    text: '1h'
+                }, {
+                type: 'hour',
+                    count: 12,
+                    text: '12h'
+                }, {
+                    type: 'day',
+                    count: 1,
+                    text: '1D'
+                }, {
+                    type: 'week',
+                    count: 1,
+                    text: '1W'
+                }, {
+                    type: 'all',
+                    count: 1,
+                    text: 'All'
+                }],
+                selected: 1,
+                inputEnabled: false
+            },
+            series: [{
+                color: Highcharts.getOptions().colors[2],
+                gapSize: 6,
+                tooltip: {
+                    valueDecimals: 1
+                }
+            }],
+            title: {
+                text: 'Temperature vs. Time'
+            },
+            data: {
+                csv: data
+            },
+            navigation: {
+                buttonOptions: {
+                    enabled: false
+                }
+            }            
+        });
+    });
+    $.get('humidity.csv', function (data) {
+        $('#container1').highcharts('StockChart', {
+            xAxis: {
+                type: 'datetime',
+                ordinal: false
+            },
+            rangeSelector: {
+                buttons: [{
+                    type: 'hour',
+                    count: 1,
+                    text: '1h'
+                }, {
+                type: 'hour',
+                    count: 12,
+                    text: '12h'
+                }, {
+                    type: 'day',
+                    count: 1,
+                    text: '1D'
+                }, {
+                    type: 'week',
+                    count: 1,
+                    text: '1W'
+                }, {
+                    type: 'all',
+                    count: 1,
+                    text: 'All'
+                }],
+                selected: 1,
+                inputEnabled: false
+            },
+            yAxis: {
+                tickInterval: 5,
+                min: 10,
+                endOnTick: false,
+                minRange: 55
+            },
+            title: {
+                text: 'Humidity vs. Time'
+            },
+            series: [{
+                name: 'AAPL',
+                type: 'area',
+                data: data,
+                gapSize: 6,
+                tooltip: {
+                    valueDecimals: 1
+                },
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                threshold: null
+            }],
+            data: {
+                csv: data
+            },
+            navigation: {
+                buttonOptions: {
+                    enabled: false
+                }
+            }
+
+        });
+    });
+    $.get('pm1.csv', function (data1) {
+        $.get('pm2.csv', function (data2) {
+            $.get('pm10.csv', function (data10) {
+                var series1 = parseCSV(data1);
+                var series2 = parseCSV(data2);
+                var series10 = parseCSV(data10)
+                $('#container2').highcharts('StockChart', {
+
+                    xAxis: {
+                        type: 'datetime',
+                        ordinal: false
+                    },
+                    yAxis: {
+min: 0, minRange:100
+                    },
+                    title: {
+                        text: 'Particulate Matter vs. Time'
+                    },
+                    rangeSelector: {
+                    buttons: [{
+                        type: 'hour',
+                        count: 1,
+                        text: '1h'
+                    }, {
+                    type: 'hour',
+                        count: 12,
+                        text: '12h'
+                    }, {
+                        type: 'day',
+                        count: 1,
+                        text: '1D'
+                    }, {
+                        type: 'week',
+                        count: 1,
+                        text: '1W'
+                    }, {
+                        type: 'all',
+                        count: 1,
+                        text: 'All'
+                    }],
+                    selected: 2,
+                    inputEnabled: false
+                    },
+                    series: [{
+                        name: 'PM1',
+                        data: series1,
+                        tooltip: {
+                            valueDecimals: 1
+                        },
+                        lineWidth: 1,
+                        gapSize: 6
+                    },
+                    {
+                        name: 'PM10',
+                        data: series10,
+                        tooltip: {
+                            valueDecimals: 1
+                        },
+                        lineWidth: 1,
+                        gapSize: 6
+                    },
+                    {
+                        name: 'PM2',
+                        data: series2,
+                        tooltip: {
+                            valueDecimals: 1
+                        },
+                        lineWidth: 1,
+                        gapSize: 6
+                    }],
+                    navigation: {
+                        buttonOptions: {
+                            enabled: false
+                        }
+                    }          
+                });
+            });
+        });
+    });
+});
+    </script>
+  </head>
+  <body bgcolor="#000000">
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
+    <script src="http://code.highcharts.com/modules/data.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <div id="container"></div>		
+<br>
+    <div id="container1"></div>		
+    <br>
+    <div id="container2"></div>		
+    <div id="container3"></div>		
+    <script type="text/javascript" src="//code.highcharts.com/themes/dark-unica.js"></script>
+  </body>
+</html>
