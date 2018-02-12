@@ -27,3 +27,6 @@ su -c "cd ~/beautiful-air/ && screen -dmS collect watch -n 60 python3 ~/beautifu
 
 ## Customizations
 The modular form of this project means that you can easily add or erase blocks of code from both `index.html` and `collect.py` and add any sensor of your choice. Duplicate a csv file, rename it, and change the header/labels. Add a url request, and add your new file to `collect.py`. Copy/edit a block from `index.html`, and change the url to your own. Use the humidity code block as a template for a single sensor plot, or the particulate matter one for multiple plots.
+
+## Troubleshooting
+If the charts aren't displaying properly, this could mean there are inconsistencies in the ordering for your time values. If the times aren't strictly increasing, highcharts runs into some problems. Run clean.py in the directory with your `.csv` files.
